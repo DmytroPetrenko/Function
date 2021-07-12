@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Closure</title>
+	</head>
+	<body>
+		<script>
+			/* Независимы ли счётчики?
+
+						 Да, Независимы. Покажет 0, 1 */
+
+			function Counter() {
+				let count = 0
+
+				this.up = function () {
+					return ++count
+				}
+				this.down = function () {
+					return --count
+				}
+			}
+
+			let counter = new Counter()
+
+			console.log(counter.up()) // ? 1
+			console.log(counter.up()) // ? 2
+			console.log(counter.down()) // ? 1
+
+			// -------------------------------------
+
+			let phrase = "Hello"
+
+			if (true) {
+				let user = "John"
+
+				function sayHi() {
+					console.log(`${phrase}, ${user}`)
+				}
+			}
+
+			sayHi() // Ошибка. Функция не определена. Определение внутри блока if
+
+			/* Напишите функцию sum, которая работает таким образом: sum(a)(b) = a+b. */
+
+			function sum(n) {
+				return (m) => console.log(n + m)
+			}
+
+			sum(1)(2) // 3
+			sum(5)(-1) // 4
+
+			/* .. ваш код для inBetween и inArray */
+			let arr = [1, 2, 3, 4, 5, 6, 7]
+
+			function inBetween(start, end) {
+				return function (num) {
+					return num >= start && num <= end
+				}
+			}
+
+			function inArray(array) {
+				return (num) => array.includes(num)
+			}
+
+			console.log(arr.filter(inBetween(3, 6))) // 3,4,5,6
+
+			console.log(arr.filter(inArray([1, 2, 10]))) // 1,2
+
+			/* ---------------------------------------------- */
+
+			let users = [
+				{ name: "John", age: 20, surname: "Johnson" },
+				{ name: "Pete", age: 18, surname: "Peterson" },
+				{ name: "Ann", age: 19, surname: "Hathaway" },
+			]
+
+			/* Обычный способ был бы таким:
+
+			     // по имени (Ann, John, Pete)
+			       users.sort((a, b) => a.name > b.name ? 1 : -1);
+
+			     // по возрасту (Pete, Ann, John)
+			       users.sort((a, b) => a.age > b.age ? 1 : -1); */
+
+			function byField(field) {
+				return (a, b) => (a[field] > b[field] ? 1 : -1)
+			}
+
+			users.forEach((user) => console.log(user))
+			users.sort(byField("name"))
+			users.forEach((user) => console.log(user))
+			users.sort(byField("age"))
+			users.forEach((user) => console.log(user))
+
+			/* function makeArmy() {
+				let shooters = []
+
+				let i = 0
+				while (i < 10) {
+					let shooter = function () {
+						// функция shooter
+						alert(i) // должна выводить порядковый номер
+					}
+					shooters.push(shooter)
+					i++
+				}
+
+				return shooters
+			}
+
+			let army = makeArmy()
+
+			army[0]() // у 0-го стрелка будет номер 10
+			army[5]() // и у 5-го стрелка тоже будет номер 10
+			// ... у всех стрелков будет номер 10, вместо 0, 1, 2, 3... */
+
+			function makeArmy() {
+				let shooters = []
+
+				let i = 0
+				while (i < 10) {
+					let num = i
+					let shooter = function () {
+						// функция shooter
+						console.log(num) // должна выводить порядковый номер
+					}
+					shooters.push(shooter)
+					i++
+				}
+
+				return shooters
+			}
+
+			let army = makeArmy()
+
+			army[0]() // у 0-го стрелка будет номер 10
+			army[5]() // и у 5-го стрелка тоже будет номер 10
+		</script>
+	</body>
+</html>
