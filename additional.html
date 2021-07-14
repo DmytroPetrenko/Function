@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Additional</title>
+	</head>
+	<body>
+		<input id="elem" value="привет" />
+		<script>
+			/* Добавьте в последнюю строчку метод call() так, чтобы на экран вывелось value инпута, лежащего в переменной elem */
+
+			var elem = document.getElementById("elem")
+
+			function func() {
+				alert(this.value)
+			}
+
+			func.call(elem) //тут должно вывести value инпута
+
+			/* Добавьте в последнюю строчку метод call() так, чтобы на экран вывелось 'привет, Иванов Иван'. Слово 'привет' должно взяться из value инпута, а 'Иванов' и 'Иван' должны быть параметрами функциями. */
+
+			var elem2 = document.getElementById("elem")
+
+			function func2(surname, name) {
+				alert(this.value + ", " + surname + " " + name)
+			}
+
+			func2.call(elem2, "Ivanov", "Ivan") //тут должно вывести 'привет, Иванов Иван'
+
+			/* Переделайте решение предыдущей задачи так, чтобы место метода call() был метод apply(). */
+
+			func2.apply(elem2, ["Ivanov", "Ivan"])
+
+			/* Напишите в указанном месте конструкцию с методом bind() так, чтобы this внутри функции func всегда указывал на инпут из переменной elem. */
+
+			function func3(surname, name) {
+				alert(this.value + ", " + surname + " " + name)
+			}
+
+			func3 = func3.bind(elem2)
+
+			func3("Иванов", "Иван") //тут должно вывести 'привет, Иванов Иван'
+			func3("Петров", "Петр") //тут должно вывести 'привет, Петров Петр'
+		</script>
+	</body>
+</html>
